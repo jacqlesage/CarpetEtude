@@ -16,7 +16,28 @@ public class CarpetsEtude {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        String caseType ="";
+        
+        
+        
+        switch(caseType){
+        
+            case "-m":
+                //call to function
+                break;
+            case "-n":
+                //call to function
+                 break;
+            case "-b":
+                //call to function
+                 break;
+            default:
+                System.out.println("No correct input");
+            
+        
+        }
+        
     }
     
 }
