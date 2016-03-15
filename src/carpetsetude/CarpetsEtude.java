@@ -27,7 +27,7 @@ public class CarpetsEtude {
     private static ArrayList<String> carpetStock;
     private static ArrayList<ArrayList<CarpetPair>> normCombinations;
     private static ArrayList<ArrayList<CarpetPair>> reverseCombinations;
-    private static ArrayList<Integer[]> numMatchesList;
+    private static ArrayList<ArrayList<CarpetPair>> numMatchesList;
 
     /**
      * @param args the command line arguments
@@ -48,7 +48,7 @@ public class CarpetsEtude {
         carpetLength = carpetStock.get(0).length();
         generateCombinations();
 
-        printReadInputTests();
+//        printReadInputTests();
         printReadCombinationTests();
     }
 
@@ -82,6 +82,11 @@ public class CarpetsEtude {
     private static void generateCombinations() {
         normCombinations = new ArrayList<>();
         reverseCombinations = new ArrayList<>();
+        numMatchesList = new ArrayList<>();
+        for (int index = 0; index < carpetLength + 1; index ++) {
+            ArrayList<CarpetPair> matchList = new ArrayList<>();
+            numMatchesList.add(matchList);
+        }
         for (int i = 0; i < carpetStock.size() - 1; i++) {
             ArrayList<CarpetPair> carpetPairList = new ArrayList<>();
             ArrayList<CarpetPair> reverseCarpetPairList = new ArrayList<>();
@@ -101,6 +106,8 @@ public class CarpetsEtude {
                 CarpetPair reverseCarpetPair = new CarpetPair(reverseMatches, i, j, true);
                 carpetPairList.add(carpetPair);
                 reverseCarpetPairList.add(reverseCarpetPair);
+                numMatchesList.get(matches).add(carpetPair);
+                numMatchesList.get(reverseMatches).add(reverseCarpetPair);
             }
             normCombinations.add(carpetPairList);
             reverseCombinations.add(reverseCarpetPairList);
@@ -123,22 +130,43 @@ public class CarpetsEtude {
     }
 
     private static void printReadCombinationTests() {
+        int count = 0;
         // test print for normal combinations
+        System.out.println("normCombinations\n");
         for (ArrayList list : normCombinations) {
             for (int i = 0; i < list.size(); i++) {
                 System.out.print(list.get(i).toString());
                 System.out.print(" ");
+                count++;
             }
             System.out.println();
         }
+        System.out.println("count: " + count);
 
         // test print for reverse combinations
+        count = 0;
+        System.out.println("reverseCombinations\n");
         for (ArrayList list : reverseCombinations) {
             for (int i = 0; i < list.size(); i++) {
                 System.out.print(list.get(i).toString());
                 System.out.print(" ");
+                count++;
             }
             System.out.println();
         }
+        System.out.println("count: " + count);
+        
+        // test print for number of matches
+        count = 0;
+        System.out.println("numMatchesList\n");
+        for (ArrayList list : numMatchesList) {
+            for (int i = 0; i < list.size(); i++) {
+                System.out.print(list.get(i).toString());
+                System.out.print(" ");
+                count++;
+            }
+            System.out.println();
+        }
+        System.out.println("count: " + count);
     }
 }
