@@ -101,5 +101,11 @@ public class CarpetPair {
         this.reverse = reverse;
     }
     
-    
+    /**
+     * To string method
+     * @return String
+     */
+    public String toString() {
+        return "(" + index1 + ", " + index2 + ") " + numMatches + " " + reverse;
+    }
 }
