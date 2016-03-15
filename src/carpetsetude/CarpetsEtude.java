@@ -23,6 +23,7 @@ public class CarpetsEtude {
 
     private static int carpetSize;
     private static int carpetLength;
+    private static int stockSize;
     private static String flags;
     private static ArrayList<String> carpetStock;
     private static ArrayList<ArrayList<CarpetPair>> normCombinations;
@@ -46,10 +47,15 @@ public class CarpetsEtude {
 
         carpetStock = readInputFile();
         carpetLength = carpetStock.get(0).length();
-        generateCombinations();
+        stockSize = carpetStock.size();
+//        generateCombinations();
+        generateCombinations2();
+        noMatches();
 
 //        printReadInputTests();
-        printReadCombinationTests();
+//        printReadCombinationTests();
+//        printMatchesListTest();
+//        printMatchesTest(0);
     }
 
     /**
@@ -114,6 +120,52 @@ public class CarpetsEtude {
         }
     }
 
+    private static void generateCombinations2() {
+        numMatchesList = new ArrayList<>();
+        for (int index = 0; index < carpetLength + 1; index ++) {
+            ArrayList<CarpetPair> matchList = new ArrayList<>();
+            numMatchesList.add(matchList);
+        }
+        for (int i = 0; i < carpetStock.size(); i++) {
+            for (int j = 0; j < carpetStock.size(); j++) {
+                int matches = 0, reverseMatches = 0;
+                String line1 = carpetStock.get(i);
+                String line2 = carpetStock.get(j);
+                for (int k = 0; k < carpetLength; k++) {
+                    if (line1.charAt(k) == line2.charAt(k)) {
+                        matches++;
+                    }
+                    if (line1.charAt(carpetLength - 1 - k) == line2.charAt(k)) {
+                        reverseMatches++;
+                    }
+                }
+                CarpetPair carpetPair = new CarpetPair(matches, i, j, false);
+                CarpetPair reverseCarpetPair = new CarpetPair(reverseMatches, i, j, true);
+                numMatchesList.get(matches).add(carpetPair);
+                numMatchesList.get(reverseMatches).add(reverseCarpetPair);
+            }
+        }
+    }
+    
+    private static void noMatches() {
+        int index = 0;
+        ArrayList<ArrayList<CarpetPair>> noMatchesList = new ArrayList<>();
+        for (int i = 0; i < stockSize; i++) {
+            ArrayList<CarpetPair> pairList = new ArrayList<>();
+            noMatchesList.add(pairList);
+        }
+        
+        ArrayList<CarpetPair> tempList = numMatchesList.get(0);
+        for (int i = 0; i < tempList.size(); i++) {
+            CarpetPair tempCarpetPair = tempList.get(i);
+            index = tempCarpetPair.getIndex1();
+            noMatchesList.get(index).add(tempCarpetPair);
+        }
+        
+        printNoMatchesTest(noMatchesList);
+        printNumPairsInMatch(noMatchesList);
+    }
+    
     private static void printReadInputTests() {
         // test cmd arguments are stored properly
         System.out.println("carpetSize = " + carpetSize);
@@ -127,6 +179,8 @@ public class CarpetsEtude {
         for (String l : carpetStock) {
             System.out.println(l);
         }
+        
+        System.out.println("stock count: " + carpetStock.size());
     }
 
     private static void printReadCombinationTests() {
@@ -168,5 +222,49 @@ public class CarpetsEtude {
             System.out.println();
         }
         System.out.println("count: " + count);
+    }
+    
+    private static void printMatchesListTest() {
+        // test print for number of matches
+        int count = 0;
+        System.out.println("numMatchesList\n");
+        for (ArrayList list : numMatchesList) {
+            for (int i = 0; i < list.size(); i++) {
+                System.out.print(list.get(i).toString());
+                System.out.print(" ");
+                count++;
+            }
+            System.out.println();
+        }
+        System.out.println("count: " + count);
+    }
+    
+    private static void printMatchesTest(int index) {
+        for(CarpetPair cp : numMatchesList.get(index))
+            System.out.println(cp.toString());
+    }
+    
+    private static void printNoMatchesTest(ArrayList<ArrayList<CarpetPair>> noMatchesList) {
+        // test print for no matches ArrayList
+        int count = 0;
+        System.out.println("noMatchesList\n");
+        for (ArrayList list : noMatchesList) {
+            for (int i = 0; i < list.size(); i++) {
+                System.out.print(list.get(i).toString());
+                System.out.print(" ");
+                count++;
+            }
+            System.out.println();
+        }
+        System.out.println("count: " + count);
+    }
+    
+    private static void printNumPairsInMatch(ArrayList<ArrayList<CarpetPair>> matchesList) {
+        System.out.println("noMatchesList size\n");
+        int i = 0;
+        for (ArrayList list : matchesList) {
+            System.out.println(i + ": " + list.size());
+            i++;
+        }
     }
 }
